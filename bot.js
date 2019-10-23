@@ -7,7 +7,7 @@ var router = express.Router();
 const token = process.env.TOKEN;
 
 router.get('/', function(req, res){
-    res.status(200).send(process.env);
+    res.status(200).send('bot setup here');
 })
 
 router.post('/' + token, function(req,res){
