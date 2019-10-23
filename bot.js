@@ -19,7 +19,7 @@ router.get('/setup', function(req, res){
 })
 
 router.post('/' + token, function(req,res){
-    console.log(req.params);
+    console.log(req.headers);
     res.status(200).send('ok'); 
 });
 
