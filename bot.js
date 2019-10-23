@@ -4,6 +4,8 @@ var request = require ('request');
 
 var router = express.Router();
 
+router.use(express.bodyParser());
+
 const token = process.env.TOKEN;
 const hookURI = process.env.HOOK;
 
@@ -19,7 +21,7 @@ router.get('/setup', function(req, res){
 })
 
 router.post('/' + token, function(req,res){
-    console.log(req.headers);
+    console.log(req.body);
     res.status(200).send('ok'); 
 });
 
