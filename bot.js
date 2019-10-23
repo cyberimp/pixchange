@@ -22,7 +22,7 @@ router.get('/setup', function(req, res){
 })
 
 router.post('/' + token, function(req,res){
-    console.log(req.body.message.photo[0]);
+    console.log(req.body.message.photo);
     res.status(200).send('ok'); 
 });
 
