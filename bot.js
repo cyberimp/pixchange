@@ -33,7 +33,7 @@ router.post('/' + token, function(req,res){
             console.log('body:', body); // Print the HTML for the Google homepage.
             var result = JSON.parse(body);
             console.log(result.result);
-            request("https://api.telegram.org/bot"+ token +"/"+result.result.file_path,function (error,response,body){
+            request("https://api.telegram.org/file/bot"+ token +"/"+result.result.file_path,function (error,response,body){
                 console.error('error:', error); // Print the error if one occurred
                 console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
                 console.log('body:', body); // Print the HTML for the Google homepage.
