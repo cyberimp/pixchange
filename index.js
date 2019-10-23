@@ -1,11 +1,14 @@
 'use strict';
 import express from 'express';
 import request from 'request';
+var bot = require('bot');
 
 const app = express();
 const port = process.env.PORT;
 const token = process.env.TOKEN;
 const chatID = 123;
+
+app.use('/bot', bot)
 
 app.get('/favicon.ico', (req, res) => {
   res.send('');
