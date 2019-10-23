@@ -1,5 +1,7 @@
 'use strict';
-import express from 'express';
+var express = require('express');
+var request = require ('request');
+
 var router = express.Router();
 
 const token = process.env.TOKEN;

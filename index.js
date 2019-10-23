@@ -1,6 +1,6 @@
 'use strict';
-import express from 'express';
-import request from 'request';
+var express = require('express');
+var request = require ('request');
 var bot = require('bot');
 
 const app = express();
