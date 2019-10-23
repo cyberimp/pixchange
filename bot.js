@@ -1,10 +1,11 @@
 'use strict';
 var express = require('express');
 var request = require ('request');
+var bodyParser = require('body-parser')
 
 var router = express.Router();
 
-router.use(express.bodyParser());
+router.use(bodyParser.json());
 
 const token = process.env.TOKEN;
 const hookURI = process.env.HOOK;
