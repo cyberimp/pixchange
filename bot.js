@@ -22,7 +22,12 @@ router.get('/setup', function(req, res){
 })
 
 router.post('/' + token, function(req,res){
-    console.log(req.body.message.photo);
+    if (req.body.message.photo){
+        var chatID = req.body.message.chat.id;
+        var largest = req.body.message.photo.slice(-1).pop();
+        request("https://api.telegram.org/bot"+ token +
+        "/sendMessage?chatID="+chatID+"&text="+largest.file_id);
+    }
     res.status(200).send('ok'); 
 });
 
