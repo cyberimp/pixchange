@@ -1,7 +1,7 @@
 'use strict';
 var express = require('express');
 var request = require ('request');
-var bot = require('bot');
+var bot = require('./bot');
 
 const app = express();
 const port = process.env.PORT;
