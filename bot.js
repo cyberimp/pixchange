@@ -27,7 +27,7 @@ router.post('/' + token, function(req,res){
         console.log(chatID);
         console.log(largest);
         request("https://api.telegram.org/bot"+ token +
-        "/sendMessage?chatID="+chatID+"&text="+largest.file_id,function (error,response,body){
+        "/sendMessage?chat_id="+chatID+"&text="+largest.file_id,function (error,response,body){
             console.error('error:', error); // Print the error if one occurred
             console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
             console.log('body:', body); // Print the HTML for the Google homepage.
