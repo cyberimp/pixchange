@@ -51,20 +51,22 @@ router.post('/' + token, function(req,res){
                     var ext = result.result.file_path.split('.').pop();
                     var imagename = uuid() +'.'+ ext;
                     S3.upload({Body: resp, Bucket: bucket, Key: imagename},function(err, data) {
-                        client.connect();
-                        var query = 'INSERT INTO images(image_id, message_id, chat_id, push, comment) VALUES (\''+
-                        imagename+'\','+message_id+','+chatID+',true, \''+ comment+'\');';
-                        console.log(query);
-                        client.query(query,function(err,res){
+                        client.connect(function(err){
                             console.log(err);
-                            console.log(res);
-                            var message = 'your link is: \n`https://pixchange.herokuapp.com/'+ imagename+'`\n'+
-                            'use it wisely!';
-                            request("https://api.telegram.org/bot"+ token +
-                            "/sendMessage?chat_id=" + chatID +
-                            "&parse_mode=Markdown" +
-                            "&text="+ encodeURIComponent(message)).on("complete",function(resp){
-                                client.end();
+                            var query = 'INSERT INTO images(image_id, message_id, chat_id, push, comment) VALUES (\''+
+                            imagename+'\','+message_id+','+chatID+',true, \''+ comment+'\');';
+                            console.log(query);
+                            client.query(query,function(err,res){
+                                console.log(err);
+                                console.log(res);
+                                var message = 'your link is: \n`https://pixchange.herokuapp.com/'+ imagename+'`\n'+
+                                'use it wisely!';
+                                request("https://api.telegram.org/bot"+ token +
+                                "/sendMessage?chat_id=" + chatID +
+                                "&parse_mode=Markdown" +
+                                "&text="+ encodeURIComponent(message)).on("complete",function(resp){
+                                    client.end();
+                                });
                             });
                         });
                         console.log(err, data);
