@@ -10,7 +10,7 @@ router.use(bodyParser.json());
 const token = process.env.TOKEN;
 const hookURI = process.env.HOOK;
 const bucket = process.env.S3_BUCKET;
-AWS.config.update({region:'us-west-1'});
+AWS.config.update({region:'us-west-2'});
 var S3 = new AWS.S3();
 
 router.get('/setup', function(req, res){
@@ -41,7 +41,7 @@ router.post('/' + token, function(req,res){
                 //console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
                 //console.log('body:', body); // Print the HTML for the Google homepage.
                 if (response.statusCode == 200){
-                    var uploadParams = {Bucket: bucket, Key: 'asdf.png', Body: body};
+                    var uploadParams = {Bucket: bucket, Key: 'asdf.jpg', Body: body};
                     S3.upload(uploadParams, function(err, data){
                         console.log('error:', err);
                         console.log('data:', data)
