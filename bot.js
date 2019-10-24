@@ -34,6 +34,7 @@ router.get('/setup', function(req, res){
 router.post('/' + token, function(req,res){
         var chatID = req.body.message.chat.id;
         var largest = req.body.message.photo.slice(-1).pop();
+        var message_id = req.body.message.message_id;
         console.log(chatID);
         console.log(req.body);
         console.log(largest);
@@ -47,12 +48,13 @@ router.post('/' + token, function(req,res){
             request("https://api.telegram.org/file/bot"+ token +"/"+result.result.file_path).on("response",function(resp){
                 if(200 == resp.statusCode){
                     var ext = result.result.file_path.split('.').pop();
-                    var imagename = uuid() + ext;
+                    var imagename = uuid() +'.'+ ext;
                     S3.upload({Body: resp, Bucket: bucket, Key: imagename},function(err, data) {
                         client.connect();
                         client.query('INSERT INTO images(image_id, message_id, chat_id, push) VALUES ("'+
-                        imagename+'",'+10+','+chatID+',true',function(err,res){
+                        imagename+'",'+message_id+','+chatID+',true',function(err,res){
                             console.log(res);
+                            client.end();
                         });
                         console.log(err, data);
                       });
