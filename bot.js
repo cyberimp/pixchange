@@ -4,11 +4,7 @@ var request = require ('request');
 var bodyParser = require('body-parser');
 var AWS = require('aws-sdk');
 var uuid = require('uuid/v4');
-const { Client } = require('pg');
-const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: true,
-  });
+var { Client } = require('pg');
 
 var router = express.Router();
 
@@ -51,6 +47,10 @@ router.post('/' + token, function(req,res){
                     var ext = result.result.file_path.split('.').pop();
                     var imagename = uuid() +'.'+ ext;
                     S3.upload({Body: resp, Bucket: bucket, Key: imagename},function(err, data) {
+                        var client = new Client({
+                            connectionString: process.env.DATABASE_URL,
+                            ssl: true,
+                          });
                         client.connect(function(err){
                             console.log(err);
                             var query = 'INSERT INTO images(image_id, message_id, chat_id, push, comment) VALUES (\''+
