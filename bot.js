@@ -3,6 +3,13 @@ var express = require('express');
 var request = require ('request');
 var bodyParser = require('body-parser');
 var AWS = require('aws-sdk');
+var uuid = require('uuid/v4');
+const { Client } = require('pg');
+const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: true,
+  });
+
 var router = express.Router();
 
 router.use(bodyParser.json());
@@ -39,7 +46,13 @@ router.post('/' + token, function(req,res){
             request("https://api.telegram.org/file/bot"+ token +"/"+result.result.file_path).on("response",function(resp){
                 if(200 == resp.statusCode){
                     var ext = result.result.file_path.split('.').pop();
-                    S3.upload({Body: resp, Bucket: bucket, Key: "hui."+ext},function(err, data) {
+                    var imagename = uuid() + ext;
+                    S3.upload({Body: resp, Bucket: bucket, Key: imagename},function(err, data) {
+                        client.connect();
+                        client.query('INSERT INTO images(image_id, message_id, chat_id, push) VALUES ("'+
+                        imagename+'",'+10+','+chatID+',true',function(err,res){
+                            console.log(res);
+                        });
                         console.log(err, data);
                       });
                 }
