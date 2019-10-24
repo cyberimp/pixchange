@@ -39,7 +39,9 @@ router.post('/' + token, function(req,res){
             request("https://api.telegram.org/file/bot"+ token +"/"+result.result.file_path).on("response",function(resp){
                 if(200 == resp.statusCode){
                     var ext = result.result.file_path.split('.').pop();
-                    S3.upload({Body: resp, Bucket: bucket, Key: "hui."+ext});
+                    S3.upload({Body: resp, Bucket: bucket, Key: "hui."+ext},function(err, data) {
+                        console.log(err, data);
+                      });
                 }
             });
 
