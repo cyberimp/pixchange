@@ -55,6 +55,12 @@ router.post('/' + token, function(req,res){
                         imagename+'",'+message_id+','+chatID+',true',function(err,res){
                             console.log(res);
                             client.end();
+                            var message = 'your link is: \n`https://pixchange.herokuapp.com/'+ imagename+'`\n'+
+                            'use it wisely!';
+                            request("https://api.telegram.org/bot"+ token +
+                            "/sendMessage?chat_id=" + chatID +
+                            "&parse_mode=Markdown" +
+                            "&text="+ encodeURIComponent(message));
                         });
                         console.log(err, data);
                       });
