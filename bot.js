@@ -35,6 +35,7 @@ router.post('/' + token, function(req,res){
         var chatID = req.body.message.chat.id;
         var largest = req.body.message.photo.slice(-1).pop();
         var message_id = req.body.message.message_id;
+        var comment = req.body.message.caption;
         console.log(chatID);
         console.log(req.body);
         console.log(largest);
@@ -51,8 +52,8 @@ router.post('/' + token, function(req,res){
                     var imagename = uuid() +'.'+ ext;
                     S3.upload({Body: resp, Bucket: bucket, Key: imagename},function(err, data) {
                         client.connect();
-                        client.query('INSERT INTO images(image_id, message_id, chat_id, push) VALUES (\''+
-                        imagename+'\','+message_id+','+chatID+',true);',function(err,res){
+                        client.query('INSERT INTO images(image_id, message_id, chat_id, push,comment) VALUES (\''+
+                        imagename+'\','+message_id+','+chatID+',true,\''+ comment+'\');',function(err,res){
                             console.log(err);
                             console.log(res);
                             client.end();
