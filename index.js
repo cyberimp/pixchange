@@ -23,7 +23,8 @@ app.get('/favicon.ico', (req, res) => {
 
 app.get('/:img', (req, res) => {
   S3.getObject({Bucket: bucket, Key: req.params.img}).on("httpHeaders",(code,headers,resp, message) =>{
-    res.status.code(code).headers(headers)})
+    res.status.code(code).headers(headers);
+    console.log(headers);})
     .on("httpData",(chunk) => {res.send(chunk)})
     .on("complete",(resp) =>{
       console.log("Done!");
