@@ -36,20 +36,13 @@ router.post('/' + token, function(req,res){
             console.log('body:', body); // Print the HTML for the Google homepage.
             var result = JSON.parse(body);
             console.log(result.result);
-            request("https://api.telegram.org/file/bot"+ token +"/"+result.result.file_path,function (error,response,body){
-                //console.error('error:', error); // Print the error if one occurred
-                //console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-                //console.log('body:', body); // Print the HTML for the Google homepage.
-                if (response.statusCode == 200){
+            request("https://api.telegram.org/file/bot"+ token +"/"+result.result.file_path).on("response",function(resp){
+                if(200 == resp.statusCode){
                     var ext = result.result.file_path.split('.').pop();
-                    var uploadParams = {Bucket: bucket, Key: '123456.'+ext, Body: body};
-                    S3.upload(uploadParams, function(err, data){
-                        console.log('error:', err);
-                        console.log('data:', data)
-                    });
+                    S3.upload({Body: resp, Bucket: bucket, Key: "hui."+ext});
                 }
+            });
 
-        });
         });
     res.status(200).send('ok'); 
 });
