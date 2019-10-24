@@ -52,8 +52,8 @@ router.post('/' + token, function(req,res){
                     var imagename = uuid() +'.'+ ext;
                     S3.upload({Body: resp, Bucket: bucket, Key: imagename},function(err, data) {
                         client.connect();
-                        client.query('INSERT INTO images(image_id, message_id, chat_id, push,comment) VALUES (\''+
-                        imagename+'\','+message_id+','+chatID+',true,\''+ comment+'\');',function(err,res){
+                        client.query('INSERT INTO images(image_id, message_id, chat_id, push, comment) VALUES (\''+
+                        imagename+'\','+message_id+','+chatID+',true, \''+ comment+'\');',function(err,res){
                             console.log(err);
                             console.log(res);
                             client.end();
