@@ -58,13 +58,14 @@ router.post('/' + token, function(req,res){
                         client.query(query,function(err,res){
                             console.log(err);
                             console.log(res);
-                            client.end();
                             var message = 'your link is: \n`https://pixchange.herokuapp.com/'+ imagename+'`\n'+
                             'use it wisely!';
                             request("https://api.telegram.org/bot"+ token +
                             "/sendMessage?chat_id=" + chatID +
                             "&parse_mode=Markdown" +
-                            "&text="+ encodeURIComponent(message));
+                            "&text="+ encodeURIComponent(message)).on("complete",function(resp){
+                                client.end();
+                            });
                         });
                         console.log(err, data);
                       });
