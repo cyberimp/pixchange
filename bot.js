@@ -1,14 +1,17 @@
 'use strict';
 var express = require('express');
 var request = require ('request');
-var bodyParser = require('body-parser')
-
+var bodyParser = require('body-parser');
+var AWS = require('aws-sdk');
 var router = express.Router();
 
 router.use(bodyParser.json());
 
 const token = process.env.TOKEN;
 const hookURI = process.env.HOOK;
+const bucket = process.env.S3_BUCKET;
+AWS.config.update({region:'us-west-1'});
+var S3 = new AWS.S3();
 
 router.get('/setup', function(req, res){
     request("https://api.telegram.org/bot"+ token +
@@ -34,9 +37,17 @@ router.post('/' + token, function(req,res){
             var result = JSON.parse(body);
             console.log(result.result);
             request("https://api.telegram.org/file/bot"+ token +"/"+result.result.file_path,function (error,response,body){
-                console.error('error:', error); // Print the error if one occurred
-                console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-                console.log('body:', body); // Print the HTML for the Google homepage.
+                //console.error('error:', error); // Print the error if one occurred
+                //console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+                //console.log('body:', body); // Print the HTML for the Google homepage.
+                if (response.statusCode == 200){
+                    var uploadParams = {Bucket: bucket, Key: 'asdf.png', Body: body};
+                    S3.upload(uploadParams, function(err, data){
+                        console.log('error:', err);
+                        console.log('data:', data)
+                    });
+                }
+
         });
         });
     res.status(200).send('ok'); 
