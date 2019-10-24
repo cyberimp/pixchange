@@ -53,6 +53,7 @@ router.post('/' + token, function(req,res){
                         client.connect();
                         client.query('INSERT INTO images(image_id, message_id, chat_id, push) VALUES ("'+
                         imagename+'",'+message_id+','+chatID+',true',function(err,res){
+                            console.log(err);
                             console.log(res);
                             client.end();
                             var message = 'your link is: \n`https://pixchange.herokuapp.com/'+ imagename+'`\n'+
