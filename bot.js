@@ -41,7 +41,8 @@ router.post('/' + token, function(req,res){
                 //console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
                 //console.log('body:', body); // Print the HTML for the Google homepage.
                 if (response.statusCode == 200){
-                    var uploadParams = {Bucket: bucket, Key: 'asdf.jpg', Body: body};
+                    var ext = result.result.file_path.split('.').pop();
+                    var uploadParams = {Bucket: bucket, Key: '123456.'+ext, Body: body};
                     S3.upload(uploadParams, function(err, data){
                         console.log('error:', err);
                         console.log('data:', data)
