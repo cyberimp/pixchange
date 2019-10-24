@@ -35,6 +35,7 @@ router.post('/' + token, function(req,res){
         var chatID = req.body.message.chat.id;
         var largest = req.body.message.photo.slice(-1).pop();
         console.log(chatID);
+        console.log(req.body);
         console.log(largest);
         request("https://api.telegram.org/bot"+ token +
         "/getFile?file_id="+largest.file_id,function (error,response,body){
