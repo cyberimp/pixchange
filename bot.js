@@ -28,7 +28,18 @@ router.get('/setup', function(req, res){
 })
 
 router.post('/' + token, function(req,res){
+        if (!(message in req.body)){
+            res.sendStatus(200);
+            return;
+        } 
         var chatID = req.body.message.chat.id;
+        if (!(photo in req.body.message)){
+            request("https://api.telegram.org/bot"+ token +
+            "/sendMessage?chat_id=" + chatID +
+            "&text=")+encodeURIComponent("Send pic pls!");
+            res.sendStatus(200);
+            return;
+        }
         var largest = req.body.message.photo.slice(-1).pop();
         var message_id = req.body.message.message_id;
         var comment = req.body.message.caption;
