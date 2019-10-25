@@ -39,6 +39,7 @@ app.get('/:img', (req, res) => {
       });
       client.connect().then(()=>{
         client.query("SELECT * FROM images WHERE image_id='"+img+"';", (err, res) => {
+          console.log(err);
           console.log(res);
         });
       });
