@@ -31,7 +31,7 @@ app.get('/:img', (req, res) => {
     else
     {
       res.writeHead(200, {'Content-Type': 'image/jpeg'});
-      res.end(data.Body);
+      data.Body.pipe(res);
       if(nopush) return;
       var client = new Client({
         connectionString: process.env.DATABASE_URL,
@@ -57,24 +57,7 @@ app.get('/:img', (req, res) => {
         });
       });
     }
-  });
-
-
-  // const trackingData =
-  //   '*App name:* `' + req.params.app + '`\n' +
-  //   '*IP:* `' + req.headers['x-forwarded-for'] +'`\n' +
-  //   '*User-Agent:* `' + req.headers['user-agent'] + '`\n' +
-  //   '*Referer:* `' + req.headers['referer'] + '`';
-  // console.log(trackingData);
-  // request("https://api.telegram.org/bot"+ token +
-  // "/sendMessage?chat_id=" + chatID +
-  // "&parse_mode=Markdown" +
-  // "&text="+ encodeURIComponent(trackingData));
-
-  // if (req.params.app.endsWith(".png"))
-  //   res.sendFile(__dirname+"/zhdun.png")
-  // else
-  //   res.send('');
+  }); 
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
