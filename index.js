@@ -23,9 +23,15 @@ app.get('/favicon.ico', (req, res) => {
 
 app.get('/:img', (req, res) => {
   S3.getObject({Bucket: bucket, Key: req.params.img},(err,data) =>{
-    console.log("error:", err);
-    console.log(data);
-    res.sendStatus(200);
+    if (err != null)
+    {
+      res.sendStatus(404);
+    }
+    else
+    {
+      res.writeHead(200, {'Content-Type': 'image/jpeg'});
+      res.end(data.Body);
+    }
   });
   var client = new Client({
     connectionString: process.env.DATABASE_URL,
