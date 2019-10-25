@@ -22,7 +22,9 @@ app.get('/favicon.ico', (req, res) => {
 });
 
 app.get('/:img', (req, res) => {
-  S3.getObject({Bucket: bucket, Key: req.params.img},(err,data) =>{
+  var img = req.params.img;
+  var nopush = nopush in req.params;
+  S3.getObject({Bucket: bucket, Key: img},(err,data) =>{
     if (err != null)
     {
       res.sendStatus(404);
