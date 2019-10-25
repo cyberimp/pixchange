@@ -42,6 +42,7 @@ app.get('/:img', (req, res) => {
           if(err==null){
             if (!res.rows[0].push) return;
             var chatID = res.rows[0].chat_id;
+            var messageID = res.rows[0].message_id;
             var comment = res.rows[0].comment;
             const trackingData =
               '*Comment:* `' + comment + '`\n' +
@@ -52,6 +53,7 @@ app.get('/:img', (req, res) => {
             request("https://api.telegram.org/bot"+ token +
             "/sendMessage?chat_id=" + chatID +
             "&parse_mode=Markdown" +
+            "&reply_to_message_id=" + messageID +
             "&text="+ encodeURIComponent(trackingData));
           }        
         });

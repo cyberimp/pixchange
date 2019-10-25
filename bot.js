@@ -34,7 +34,71 @@ router.post('/' + token, function(req,res){
         } 
         var chatID = req.body.message.chat.id;
         if (!('photo' in req.body.message)){
-            console.log("no photo!");
+            command = req.body.message.text.toLowerCase().replace(/[^a-zа-я]/g,'');
+            if (['хватит', 'stop', 'заебал', 'выруби', 'off', 'вырубай'].indexOf(command)!=-1){
+                if (!('reply_to_message' in req.body.message)){
+                    var client = new Client({
+                        connectionString: process.env.DATABASE_URL,
+                        ssl: true,
+                      });
+                    client.connect(function(err){
+                        console.log(err);
+                        var query = 'UPDATE images SET push=false WHERE chat_id='+chatID+';';
+                        console.log(query);
+                        client.query(query,function(err,res){
+                            client.end();
+                            return;
+                        });
+                    });
+                }
+                var client = new Client({
+                    connectionString: process.env.DATABASE_URL,
+                    ssl: true,
+                  });
+                client.connect(function(err){
+                    console.log(err);
+                    var query = 'UPDATE images SET push=false WHERE message_id='+req.body.message.reply_to_message+';';
+                    console.log(query);
+                    res.sendStatus(200);
+                    client.query(query,function(err,res){
+                        client.end();
+                        return;
+                    });
+                });
+            }
+
+            if (['on', 'включи', 'заеби', 'запускай'].indexOf(command)!=-1){
+                if (!('reply_to_message' in req.body.message)){
+                    var client = new Client({
+                        connectionString: process.env.DATABASE_URL,
+                        ssl: true,
+                      });
+                    client.connect(function(err){
+                        console.log(err);
+                        var query = 'UPDATE images SET push=true WHERE chat_id='+chatID+';';
+                        console.log(query);
+                        res.sendStatus(200);
+                        client.query(query,function(err,res){
+                            client.end();
+                            return;
+                        });
+                    });
+                }
+                var client = new Client({
+                    connectionString: process.env.DATABASE_URL,
+                    ssl: true,
+                  });
+                client.connect(function(err){
+                    console.log(err);
+                    var query = 'UPDATE images SET push=true WHERE message_id='+req.body.message.reply_to_message+';';
+                    console.log(query);
+                    res.sendStatus(200);
+                    client.query(query,function(err,res){
+                        client.end();
+                        return;
+                    });
+                });
+            }
 
             request("https://api.telegram.org/bot"+ token +
             "/sendMessage?chat_id=" + chatID +
