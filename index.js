@@ -28,9 +28,7 @@ app.get('/:img', (req, res) => {
     console.log('headers:', headers);
     console.log('resp:', resp);
     console.log('message:', message);
-  })
-    .on("httpData",(chunk) => {res.send(chunk)})
-    .on("complete",(resp) =>{
+  }).on("httpData",(chunk) => {res.send(chunk)}).on("httpDone",(resp) =>{
       console.log("Done!");
     })
   var client = new Client({
