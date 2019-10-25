@@ -34,6 +34,7 @@ router.post('/' + token, function(req,res){
         } 
         var chatID = req.body.message.chat.id;
         if (!('photo' in req.body.message)){
+            console.log("no photo!");
             request("https://api.telegram.org/bot"+ token +
             "/sendMessage?chat_id=" + chatID +
             "&text=")+encodeURIComponent("Send pic pls!");
