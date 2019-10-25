@@ -31,7 +31,6 @@ app.get('/:img', (req, res) => {
     else
     {
       res.writeHead(200, {'Content-Type': 'image/jpeg'});
-      data.Body.pipe(res);
       res.end(data.Body);
       if(nopush) return;
       var client = new Client({
