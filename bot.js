@@ -28,12 +28,12 @@ router.get('/setup', function(req, res){
 })
 
 router.post('/' + token, function(req,res){
-        if (!(message in req.body)){
+        if (!('message' in req.body)){
             res.sendStatus(200);
             return;
         } 
         var chatID = req.body.message.chat.id;
-        if (!(photo in req.body.message)){
+        if (!('photo' in req.body.message)){
             request("https://api.telegram.org/bot"+ token +
             "/sendMessage?chat_id=" + chatID +
             "&text=")+encodeURIComponent("Send pic pls!");
