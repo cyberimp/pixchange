@@ -59,7 +59,7 @@ router.post('/' + token, function(req,res){
                   });
                 client.connect(function(err){
                     console.log(err);
-                    var query = 'UPDATE images SET push=false WHERE message_id='+req.body.message.reply_to_message+';';
+                    var query = 'UPDATE images SET push=false WHERE message_id='+req.body.message.reply_to_message.message_id+';';
                     console.log(query);
                     res.sendStatus(200);
                     client.query(query,function(err,res){
@@ -94,7 +94,7 @@ router.post('/' + token, function(req,res){
                   });
                 client.connect(function(err){
                     console.log(err);
-                    var query = 'UPDATE images SET push=true WHERE message_id='+req.body.message.reply_to_message+';';
+                    var query = 'UPDATE images SET push=true WHERE message_id='+req.body.message.reply_to_message.message_id+';';
                     console.log(query);
                     res.sendStatus(200);
                     client.query(query,function(err,res){
