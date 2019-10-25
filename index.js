@@ -31,12 +31,18 @@ app.get('/:img', (req, res) => {
     {
       res.writeHead(200, {'Content-Type': 'image/jpeg'});
       res.end(data.Body);
+      var client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: true,
+      });
+      client.connect().then(()=>{
+        client.query("SELECT * FROM images WHERE image_id='"+img+"';", (err, res) => {
+          console.log(res);
+        });
+      });
     }
   });
-  var client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: true,
-  });
+
 
   // const trackingData =
   //   '*App name:* `' + req.params.app + '`\n' +
