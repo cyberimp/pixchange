@@ -34,7 +34,7 @@ router.post('/' + token, function(req,res){
         } 
         var chatID = req.body.message.chat.id;
         if (!('photo' in req.body.message)){
-            command = req.body.message.text.toLowerCase().replace(/[^a-zа-я]/g,'');
+            var command = req.body.message.text.toLowerCase().replace(/[^a-zа-я]/g,'');
             if (['хватит', 'stop', 'заебал', 'выруби', 'off', 'вырубай'].indexOf(command)!=-1){
                 if (!('reply_to_message' in req.body.message)){
                     var client = new Client({
