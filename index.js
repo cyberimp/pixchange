@@ -13,7 +13,6 @@ const app = express();
 const port = process.env.PORT;
 const token = process.env.TOKEN;
 const bucket = process.env.S3_BUCKET;
-const chatID = 123;
 
 app.use('/bot', bot)
 
@@ -40,7 +39,7 @@ app.get('/:img', (req, res) => {
       });
       client.connect().then(()=>{
         client.query("SELECT * FROM images WHERE image_id='"+img+"';", (err, res) => {
-          if(null!=err){
+          if(err==null){
             if (!res.rows[0].push) return;
             var chatID = res.rows[0].chat_id;
             var comment = res.rows[0].comment;
