@@ -45,11 +45,13 @@ router.post('/' + token, function(req,res){
                         console.log(err);
                         var query = 'UPDATE images SET push=false WHERE chat_id='+chatID+';';
                         console.log(query);
+                        res.sendStatus(200);
                         client.query(query,function(err,res){
                             client.end();
                             return;
                         });
                     });
+                    return;
                 }
                 var client = new Client({
                     connectionString: process.env.DATABASE_URL,
@@ -65,6 +67,7 @@ router.post('/' + token, function(req,res){
                         return;
                     });
                 });
+                return;
             }
 
             if (['on', 'включи', 'заеби', 'запускай'].indexOf(command)!=-1){
@@ -83,6 +86,7 @@ router.post('/' + token, function(req,res){
                             return;
                         });
                     });
+                    return;
                 }
                 var client = new Client({
                     connectionString: process.env.DATABASE_URL,
@@ -98,6 +102,7 @@ router.post('/' + token, function(req,res){
                         return;
                     });
                 });
+                return;
             }
 
             request("https://api.telegram.org/bot"+ token +
