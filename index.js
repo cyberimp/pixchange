@@ -22,15 +22,11 @@ app.get('/favicon.ico', (req, res) => {
 });
 
 app.get('/:img', (req, res) => {
-  S3.getObject({Bucket: bucket, Key: req.params.img}).on("httpHeaders",(code,headers,resp, message) =>{
+  S3.getObject({Bucket: bucket, Key: req.params.img},(err,data) =>{
+    console.log("error:", err);
+    console.log(data);
     res.sendStatus(200);
-    console.log('code:',code);
-    console.log('headers:', headers);
-    console.log('resp:', resp);
-    console.log('message:', message);
-  }).on("httpData",(chunk) => {res.send(chunk)}).on("httpDone",(resp) =>{
-      console.log("Done!");
-    })
+  });
   var client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true,
