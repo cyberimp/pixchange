@@ -33,14 +33,28 @@ app.get('/:img', (req, res) => {
     {
       res.writeHead(200, {'Content-Type': 'image/jpeg'});
       res.end(data.Body);
+      if(nopush) return;
       var client = new Client({
         connectionString: process.env.DATABASE_URL,
         ssl: true,
       });
       client.connect().then(()=>{
         client.query("SELECT * FROM images WHERE image_id='"+img+"';", (err, res) => {
-          console.log(err);
-          console.log(res);
+          if(null!=err){
+            if (!res.rows[0].push) return;
+            var chatID = res.rows[0].chat_id;
+            var comment = res.rows[0].comment;
+            const trackingData =
+              '*Comment:* `' + comment + '`\n' +
+              '*IP:* `' + req.headers['x-forwarded-for'] +'`\n' +
+              '*User-Agent:* `' + req.headers['user-agent'] + '`\n' +
+              '*Referer:* `' + req.headers['referer'] + '`';
+            console.log(trackingData);
+            request("https://api.telegram.org/bot"+ token +
+            "/sendMessage?chat_id=" + chatID +
+            "&parse_mode=Markdown" +
+            "&text="+ encodeURIComponent(trackingData));
+          }        
         });
       });
     }
