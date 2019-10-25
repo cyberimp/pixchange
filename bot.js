@@ -77,6 +77,7 @@ router.post('/' + token, function(req,res){
                                 request("https://api.telegram.org/bot"+ token +
                                 "/sendMessage?chat_id=" + chatID +
                                 "&parse_mode=Markdown" +
+                                "&reply_to_message_id="+ message_id+
                                 "&text="+ encodeURIComponent(message)).on("complete",function(resp){
                                     client.end();
                                 });
