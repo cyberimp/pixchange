@@ -65,6 +65,7 @@ router.post('/' + token, function(req,res){
                             request("https://api.telegram.org/file/bot"+ token +"/"+result.result.file_path).on("response",function(resp){
                                 if(200 == resp.statusCode){
                                     S3.upload({Body: resp, Bucket: bucket, Key: imagename},function(err, data) {
+                                        console.log(error);
                                                 var message = 'Uploaded new version.';
                                                 request("https://api.telegram.org/bot"+ token +
                                                 "/sendMessage?chat_id=" + chatID +
@@ -80,6 +81,7 @@ router.post('/' + token, function(req,res){
                     }
                 });
             });
+            res.sendStatus(200);
             return;
 
         } 
