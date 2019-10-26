@@ -43,9 +43,7 @@ app.get('/:img', (req, res) => {
             if (!res.rows[0].push) return;
             var chatID = res.rows[0].chat_id;
             var messageID = res.rows[0].message_id;
-            var comment = res.rows[0].comment;
             const trackingData =
-              '*Comment:* `' + comment + '`\n' +
               '*IP:* `' + req.headers['x-forwarded-for'] +'`\n' +
               '*User-Agent:* `' + req.headers['user-agent'] + '`\n' +
               '*Referer:* `' + req.headers['referer'] + '`';

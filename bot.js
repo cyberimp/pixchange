@@ -48,7 +48,6 @@ router.post('/' + token, function(req,res){
                         res.sendStatus(200);
                         client.query(query,function(err,res){
                             client.end();
-                            return;
                         });
                     });
                     return;
@@ -59,12 +58,12 @@ router.post('/' + token, function(req,res){
                   });
                 client.connect(function(err){
                     console.log(err);
-                    var query = 'UPDATE images SET push=false WHERE message_id='+req.body.message.reply_to_message.message_id+';';
+                    var query = 'UPDATE images SET push=false WHERE chat_id='+chatID+
+                    ' AND message_id='+req.body.message.reply_to_message.message_id+';';
                     console.log(query);
                     res.sendStatus(200);
                     client.query(query,function(err,res){
                         client.end();
-                        return;
                     });
                 });
                 return;
@@ -83,7 +82,6 @@ router.post('/' + token, function(req,res){
                         res.sendStatus(200);
                         client.query(query,function(err,res){
                             client.end();
-                            return;
                         });
                     });
                     return;
@@ -94,12 +92,12 @@ router.post('/' + token, function(req,res){
                   });
                 client.connect(function(err){
                     console.log(err);
-                    var query = 'UPDATE images SET push=true WHERE message_id='+req.body.message.reply_to_message.message_id+';';
+                    var query = 'UPDATE images SET push=true WHERE chat_id='+chatID+
+                    ' AND message_id='+req.body.message.reply_to_message.message_id+';';
                     console.log(query);
                     res.sendStatus(200);
                     client.query(query,function(err,res){
                         client.end();
-                        return;
                     });
                 });
                 return;
@@ -135,8 +133,8 @@ router.post('/' + token, function(req,res){
                           });
                         client.connect(function(err){
                             console.log(err);
-                            var query = 'INSERT INTO images(image_id, message_id, chat_id, push, comment) VALUES (\''+
-                            imagename+'\','+message_id+','+chatID+',true, \''+ comment+'\');';
+                            var query = 'INSERT INTO images(image_id, message_id, chat_id, push) VALUES (\''+
+                            imagename+'\','+message_id+','+chatID+',true);';
                             console.log(query);
                             client.query(query,function(err,res){
                                 console.log(err);
