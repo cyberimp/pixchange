@@ -45,7 +45,7 @@ router.post('/' + token, function(req,res){
                 connectionString: process.env.DATABASE_URL,
                 ssl: true,
               });
-            var query = 'SELECT image_id FROM images WHERE chat_id='+chatID+
+            var query = 'SELECT * FROM images WHERE chat_id='+chatID+
             ' AND message_id='+req.body.edited_message.message_id+';';
             console.log(query);
             client.query(query,function(err,res){
