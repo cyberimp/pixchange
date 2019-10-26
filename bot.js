@@ -48,7 +48,6 @@ router.post('/' + token, function(req,res){
             var query = 'SELECT image_id FROM images WHERE chat_id='+chatID+
             ' AND message_id='+req.body.edited_message.message_id+';';
             console.log(query);
-            res.sendStatus(200);
             client.query(query,function(err,res){
                 console.log(err);
                 console.log(res);
@@ -79,6 +78,7 @@ router.post('/' + token, function(req,res){
                     });
                 }
             });
+            res.sendStatus(200);
             return;
 
         } 
