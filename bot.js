@@ -87,7 +87,7 @@ router.post('/' + token, function(req,res){
         } 
         var chatID = req.body.message.chat.id;
         if (!('photo' in req.body.message)){
-            if (!('text') in req.body.message){
+            if (!('text') in req.body.message || req.body.message.text == null){
                 res.sendStatus(200);
                 return;
             }
