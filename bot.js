@@ -48,37 +48,38 @@ router.post('/' + token, function(req,res){
             var query = 'SELECT * FROM images WHERE chat_id='+chatID+
             ' AND message_id='+req.body.edited_message.message_id+';';
             console.log(query);
-            client.query(query,function(err,res){
-                console.log(err);
-                console.log(res);
-                if(err == null && res.rows.length>0){
-                    var largest = req.body.edited_message.photo.slice(-1).pop();
-                    var imagename = res.rows[0].image_id;
-                    request("https://api.telegram.org/bot"+ token +
-                    "/getFile?file_id="+largest.file_id,function (error,response,body){
-                        console.error('error:', error); // Print the error if one occurred
-                        console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-                        console.log('body:', body); // Print the HTML for the Google homepage.
-                        var result = JSON.parse(body);
-                        console.log(result.result);
-                        request("https://api.telegram.org/file/bot"+ token +"/"+result.result.file_path).on("response",function(resp){
-                            if(200 == resp.statusCode){
-                                S3.upload({Body: resp, Bucket: bucket, Key: imagename},function(err, data) {
-                                            var message = 'Uploaded new version.';
-                                            request("https://api.telegram.org/bot"+ token +
-                                            "/sendMessage?chat_id=" + chatID +
-                                            "&parse_mode=Markdown" +
-                                            "&reply_to_message_id="+ message_id+
-                                            "&text="+ encodeURIComponent(message)).on("complete",function(resp){
-                                                client.end();
-                                            });
-                                });
-                            }
+            client.connect((err)=>{
+                client.query(query,function(err,res){
+                    console.log(err);
+                    console.log(res);
+                    if(err == null && res.rows.length>0){
+                        var largest = req.body.edited_message.photo.slice(-1).pop();
+                        var imagename = res.rows[0].image_id;
+                        request("https://api.telegram.org/bot"+ token +
+                        "/getFile?file_id="+largest.file_id,function (error,response,body){
+                            console.error('error:', error); // Print the error if one occurred
+                            console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+                            console.log('body:', body); // Print the HTML for the Google homepage.
+                            var result = JSON.parse(body);
+                            console.log(result.result);
+                            request("https://api.telegram.org/file/bot"+ token +"/"+result.result.file_path).on("response",function(resp){
+                                if(200 == resp.statusCode){
+                                    S3.upload({Body: resp, Bucket: bucket, Key: imagename},function(err, data) {
+                                                var message = 'Uploaded new version.';
+                                                request("https://api.telegram.org/bot"+ token +
+                                                "/sendMessage?chat_id=" + chatID +
+                                                "&parse_mode=Markdown" +
+                                                "&reply_to_message_id="+ message_id+
+                                                "&text="+ encodeURIComponent(message)).on("complete",function(resp){
+                                                    client.end();
+                                                });
+                                    });
+                                }
+                            });
                         });
-                    });
-                }
+                    }
+                });
             });
-            res.sendStatus(200);
             return;
 
         } 
