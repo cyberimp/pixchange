@@ -50,6 +50,8 @@ router.post('/' + token, function(req,res){
             console.log(query);
             res.sendStatus(200);
             client.query(query,function(err,res){
+                console.log(err);
+                console.log(res);
                 if(err == null && res.rows.length>0){
                     var largest = req.body.edited_message.photo.slice(-1).pop();
                     var imagename = res.rows[0].image_id;
