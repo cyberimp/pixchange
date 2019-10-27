@@ -32,7 +32,7 @@ app.get('/', (req, res) => {
       var clientCount = err?"lots":result.rows[0].count;
       res.render("index",{title: "Pixchange Bot: bot for exchanging images", clients: clientCount});
     })
-  });
+  }).catch((err) => console.log(err));
 })
 
 app.get('/:img', (req, res) => {
