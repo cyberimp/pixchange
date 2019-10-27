@@ -23,6 +23,15 @@ app.get('/favicon.ico', (req, res) => {
 });
 
 app.get('/', (req, res) => {
+  var client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: true,
+  });
+  client.connect().then(()=>{
+    client.query("SELECT COUNT (DISTINCT chat_id) FROM images;", (err, result) => {
+      console.log(result);
+    })
+  });
   res.render("index",{title: "Pixchange Bot: bot for exchanging images"});
 })
 
