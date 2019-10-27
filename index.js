@@ -17,7 +17,7 @@ const bucket = process.env.S3_BUCKET;
 app.use('/bot', bot)
 
 app.get('/favicon.ico', (req, res) => {
-  res.send('');
+  res.sendFile('favicon.png');
 });
 
 app.get('/:img', (req, res) => {
