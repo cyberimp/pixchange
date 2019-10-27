@@ -14,11 +14,17 @@ const port = process.env.PORT;
 const token = process.env.TOKEN;
 const bucket = process.env.S3_BUCKET;
 
-app.use('/bot', bot)
+app.use('/bot', bot);
+app.use('/img', express.static('img'));
+app.set('view engine', 'pug');
 
 app.get('/favicon.ico', (req, res) => {
   res.sendFile(__dirname+'/favicon.png');
 });
+
+app.get('/', (req, res) => {
+  res.render("index");
+})
 
 app.get('/:img', (req, res) => {
   var img = req.params.img;
