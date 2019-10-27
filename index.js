@@ -31,6 +31,7 @@ app.get('/', (req, res) => {
     client.query("SELECT COUNT (DISTINCT chat_id) FROM images;", (err, result) => {
       var clientCount = err?"lots":result.rows[0].count;
       res.render("index",{title: "Pixchange Bot: bot for exchanging images", clients: clientCount});
+      client.end();
     })
   }).catch((err) => console.log(err));
 })
@@ -68,7 +69,8 @@ app.get('/:img', (req, res) => {
             "&parse_mode=Markdown" +
             "&reply_to_message_id=" + messageID +
             "&text="+ encodeURIComponent(trackingData));
-          }        
+          }
+          client.end();        
         });
       });
     }

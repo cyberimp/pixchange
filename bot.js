@@ -80,6 +80,7 @@ router.post('/' + token, function(req,res){
                         });
                     }
                 });
+                client.end();
             });
             res.sendStatus(200);
             return;
