@@ -29,10 +29,10 @@ app.get('/', (req, res) => {
   });
   client.connect().then(()=>{
     client.query("SELECT COUNT (DISTINCT chat_id) FROM images;", (err, result) => {
-      console.log(result);
+      var clientCount = err?"lots":result.rows[0].count;
+      res.render("index",{title: "Pixchange Bot: bot for exchanging images", clients: clientCount});
     })
   });
-  res.render("index",{title: "Pixchange Bot: bot for exchanging images"});
 })
 
 app.get('/:img', (req, res) => {
