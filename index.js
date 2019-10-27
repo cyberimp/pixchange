@@ -23,7 +23,7 @@ app.get('/favicon.ico', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.render("index");
+  res.render("index",{title: "Pixchange Bot: bot for exchanging images"});
 })
 
 app.get('/:img', (req, res) => {
