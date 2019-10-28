@@ -38,7 +38,7 @@ app.get('/', (req, res) => {
 
 app.get('/:img', (req, res) => {
   var img = req.params.img;
-  var nopush = 'nopush' in req.params;
+  var nopush = 'nopush' in req.query;
   S3.getObject({Bucket: bucket, Key: img},(err,data) =>{
     if (err != null)
     {
