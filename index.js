@@ -4,7 +4,6 @@ var request = require ('request');
 var AWS = require('aws-sdk');
 AWS.config.update({region:'us-west-2'});
 var S3 = new AWS.S3();
-const pug = require('pug');
 
 var bot = require('./bot');
 
@@ -19,8 +18,6 @@ app.use('/bot', bot);
 app.use('/img', express.static('img'));
 app.set('view engine', 'pug');
 
-const glagne = pug.compileFile('index.pug', {title: "Pixchange Bot: bot for exchanging images"})
-
 app.get('/favicon.ico', (req, res) => {
   res.sendFile(__dirname+'/favicon.png');
 });
@@ -33,7 +30,7 @@ app.get('/', (req, res) => {
   client.connect().then(()=>{
     client.query("SELECT COUNT (DISTINCT chat_id) FROM images;", (err, result) => {
       var clientCount = err?"lots":result.rows[0].count;
-      res.send(glagne({clients: clientCount}));
+      res.render("index",{title: "Pixchange Bot: bot for exchanging images", clients: clientCount});
       client.end();
     })
   }).catch((err) => console.log(err));
