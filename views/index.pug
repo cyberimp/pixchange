@@ -1,4 +1,12 @@
 extends ../node_modules/pug-bootstrap/_bootstrap
+
+block append head
+    meta(property="og:title", content="Pixchange")
+    meta(property="og:description", content="Telegram bot for exchanging images with push messages")
+    meta(property="og:image", content="/img/logo.png")
+    meta(property="og:type", content="website")
+
+
 block body
     div.col-md-6.col-md-offset-3
         div.jumbotron.jumbotron-fluid.text-center(style={"max-width": "800px"})
