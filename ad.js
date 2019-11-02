@@ -18,7 +18,7 @@ rl.question("enter url of picture:",(url) => {
     rl.write("Enter text of ad, end with CTRL-D:\n");
     rl.on("line", (input)=>{ad_text += input + "\n"})
         .on("close", () => {
-            ad_text.pop();
+            let caption = ad_text.slice(0, -1);
             client.connect();
             client.query("SELECT COUNT (DISTINCT chat_id) FROM images;", (err, result) => {
                 if (err == null){
@@ -26,7 +26,7 @@ rl.question("enter url of picture:",(url) => {
                         request("https://api.telegram.org/bot"+ token +
                            "/sendPhoto?chat_id=" + element +
                            "&photo=" + encodeURIComponent(ad_url)+
-                           "&caption=" +encodeURIComponent(ad_text) +
+                           "&caption=" +encodeURIComponent(caption) +
                            "&parse_mode=Markdown");
                     });
                 }
