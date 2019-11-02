@@ -1,9 +1,9 @@
 'use strict';
-var express = require('express');
-var request = require ('request');
-var bodyParser = require('body-parser');
-var AWS = require('aws-sdk');
-var uuid = require('uuid/v4');
+const express = require('express');
+const request = require('request');
+const bodyParser = require('body-parser');
+const AWS = require('aws-sdk');
+const uuid = require('uuid/v4');
 var { Client } = require('pg');
 
 var router = express.Router();
@@ -11,7 +11,7 @@ var router = express.Router();
 router.use(bodyParser.json());
 
 const token = process.env.TOKEN;
-const hookURI = process.env.HOOK;
+//const hookURI = process.env.HOOK;
 const bucket = process.env.S3_BUCKET;
 AWS.config.update({region:'us-west-2'});
 var S3 = new AWS.S3();
@@ -63,7 +63,7 @@ router.post('/' + token, function(req,res){
                             var result = JSON.parse(body);
                             console.log(result.result);
                             request("https://api.telegram.org/file/bot"+ token +"/"+result.result.file_path).on("response",function(resp){
-                                if(200 == resp.statusCode){
+                                if(200 === resp.statusCode){
                                     S3.upload({Body: resp, Bucket: bucket, Key: imagename},function(err, data) {
                                         console.log(err);
                                         var message = 'Uploaded new version.';

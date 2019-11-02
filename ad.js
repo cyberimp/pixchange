@@ -1,5 +1,6 @@
 let { Client } = require('pg');
 const readline = require('readline');
+const token = process.env.TOKEN;
 let client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true,
@@ -18,7 +19,18 @@ rl.question("enter url of picture:",(url) => {
     rl.on("line", (input)=>{ad_text += input + "\n"})
         .on("close", () => {
             ad_text.pop();
-            console.log("caption:", ad_text);
-            console.log("photo:", ad_url);
+            client.connect();
+            client.query("SELECT COUNT (DISTINCT chat_id) FROM images;", (err, result) => {
+                if (err == null){
+                    result.rows.forEach((element) =>{
+                        request("https://api.telegram.org/bot"+ token +
+                           "/sendPhoto?chat_id=" + element +
+                           "&photo=" + encodeURIComponent(ad_url)+
+                           "&caption=" +encodeURIComponent(ad_text) +
+                           "&parse_mode=Markdown");
+                    });
+                }
+                client.end();
+            });
         });
 });

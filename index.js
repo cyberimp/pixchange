@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
       client.end();
     })
   }).catch((err) => console.log(err));
-})
+});
 
 app.get('/:img', (req, res) => {
   var img = req.params.img;
