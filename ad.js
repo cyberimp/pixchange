@@ -17,7 +17,7 @@ rl.question("enter url of picture:",(url) => {
     rl.write("Enter text of ad, end with CTRL-D:\n");
     rl.on("line", (input)=>{ad_text += input + "\n"})
         .on("close", () => {
-            console.log("photo:", ad_url);
             console.log("caption:", ad_text);
+            console.log("photo:", ad_url);
         });
 });
